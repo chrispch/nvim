@@ -10,25 +10,55 @@ Plug 'rakr/vim-two-firewatch'
 Plug 'itchyny/lightline.vim'
 Plug 'scrooloose/nerdtree'
 Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
+" Plugins for writing prose
+Plug 'masukomi/vim-markdown-folding'
+Plug 'junegunn/goyo.vim'
+Plug 'junegunn/limelight.vim'
+Plug 'junegunn/seoul256.vim'
+Plug 'wincent/command-t', {
+\   'do': 'cd ruby/command-t/ext/command-t && ruby extconf.rb && make'
+\ }
+Plug 'reedes/vim-pencil'
 
 " List ends here. Plugins become visible to Vim after this call.
 call plug#end()
 filetype plugin on
 
-" Colorscheme
-colorscheme two-firewatch
-let g:lightline={'colorscheme': 'twofirewatch'}
+" saves file before switching buffer
+:au FocusLost * silent! wa
+
+" autosaves file on cursor hold
+autocmd CursorHold,CursorHoldI * update
+
+" Color scheme
+colo seoul256
+" colorscheme two-firewatch
+" let g:lightline={'colorscheme': 'twofirewatch'}
 highlight Pmenu ctermbg=gray guibg=gray
+
+" Toggle limelight plugin with Goyo
+autocmd! User GoyoEnter Limelight
+autocmd! User GoyoLeave Limelight!
 
 " Set indent based on file type
 autocmd FileType dart set tabstop=8 softtabstop=0 expandtab shiftwidth=4 smarttab
 
-:let mapleader = ","
+" Indents word-wrapped lines as much as the 'parent' line
+set breakindent
+" Ensures word-wrap does not split words
+set formatoptions=l
+set lbr
 
-:mapclear
+" Key Mappings
 " NOTE - use :map to debug keymappings. https://vi.stackexchange.com/questions/7722/how-to-debug-a-mapping
-"
+:let mapleader = ","
+:mapclear
+
+" List buffers and jump to given number
+set autowrite
+:nnoremap <leader>b :buffers<CR>:buffer<Space>
 " Tab and enter autocomplete behaviour (like in VSCode)
+" Toggle with :CocEnable/Disable
 inoremap <silent><expr> <TAB>
       \ pumvisible() ? coc#_select_confirm() :
       \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
@@ -37,16 +67,31 @@ inoremap <silent><expr> <TAB>
 inoremap <silent> <ENTER> <CR>
 " Toggle nerd tree
 nnoremap <leader>t :NERDTreeToggle <CR>
+" Toggle CommandT (fuzzy search)
+nnoremap <leader>f :CommandT <CR>
 " Navigate between windows
-nnoremap <TAB> <c-w><c-w>
+nnoremap <leader><TAB> <c-w><c-w>
+" Close current window
+nnoremap <leader>q <c-w>q
 " Remap keys for goto definition
 nmap <silent> gd <Plug>(coc-definition)
 " Remap for rename current word
 nmap <leader>r <Plug>(coc-rename)
 nmap <leader>a <Plug>(coc-codeaction)
 " Open init.vim
-nnoremap <leader><leader> :e ~/.config/nvim/init.vim <CR>
+nnoremap <leader><leader> :e ~/.config/nvim/init.vim <bar> :source ~/.config/nvim/init.vim <CR>
 
+" PROSE
+" word count
+nnoremap <leader>w g<c-g>
+" expected navigation behaviour when line wraps
+map j gj
+map k gk
+" Toggle spellcheck
+:map <leader>sp :setlocal spell! spelllang=en_us<CR>
+nnoremap <leader>p :Goyo <CR> :PencilToggle <CR>
+" TIPS
+" use ctrl-z to suspend vim and go back to the terminal, fg to resume
 " run so % to load init.vim
 
 function! s:check_back_space() abort
@@ -54,6 +99,6 @@ function! s:check_back_space() abort
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 
-" Other config"
+" Misc "
 set number
 
