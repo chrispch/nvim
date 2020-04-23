@@ -16,6 +16,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'junegunn/vim-peekaboo'
 Plug 'kshenoy/vim-signature'
 " Plugins for writing prose
+Plug 'ron89/thesaurus_query.vim'
 Plug 'reedes/vim-wordy'
 Plug 'masukomi/vim-markdown-folding'
 Plug 'junegunn/goyo.vim'
@@ -92,6 +93,9 @@ nnoremap <leader><CR> :e ~/.config/nvim/init.vim <bar> :source ~/.config/nvim/in
 
 " PROSE
 " timer for autocommit
+" thesaurus (g:tq_openoffice_en_file = /Users/Shared/myspell/openoffice_en_thesaurus/th_en_US_new)
+let g:tq_openoffice_en_file = "/Users/Shared/myspell/openoffice_en_thesaurus/th_en_US_new"
+nnoremap <leader>T :ThesaurusQueryReplaceCurrentWord <CR>
 " marks
 nnoremap gm ]'
 nnoremap gM ['
@@ -119,7 +123,7 @@ map j gj
 map k gk
 " Toggle spellcheck
 :map <leader>sp :setlocal spell! spelllang=en_us<CR>
-nnoremap <leader>p :Goyo <CR> :PencilToggle <CR>
+nnoremap <leader>p :Goyo 70%x85%<CR> :PencilToggle <CR>
 " TIPS
 " use ctrl-z to suspend vim and go back to the terminal, fg to resume
 " run so % to load init.vim
