@@ -10,7 +10,13 @@ Plug 'rakr/vim-two-firewatch'
 Plug 'itchyny/lightline.vim'
 Plug 'scrooloose/nerdtree'
 Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-fugitive'
+Plug 'junegunn/vim-peekaboo'
+Plug 'kshenoy/vim-signature'
 " Plugins for writing prose
+Plug 'reedes/vim-wordy'
 Plug 'masukomi/vim-markdown-folding'
 Plug 'junegunn/goyo.vim'
 Plug 'junegunn/limelight.vim'
@@ -43,6 +49,8 @@ autocmd! User GoyoLeave Limelight!
 " Set indent based on file type
 autocmd FileType dart set tabstop=8 softtabstop=0 expandtab shiftwidth=4 smarttab
 
+" set nohlsearch
+set nohlsearch
 " Indents word-wrapped lines as much as the 'parent' line
 set breakindent
 " Ensures word-wrap does not split words
@@ -52,11 +60,12 @@ set lbr
 " Key Mappings
 " NOTE - use :map to debug keymappings. https://vi.stackexchange.com/questions/7722/how-to-debug-a-mapping
 :let mapleader = ","
-:mapclear
 
 " List buffers and jump to given number
 set autowrite
 :nnoremap <leader>b :buffers<CR>:buffer<Space>
+" Switch buffers 
+nnoremap <leader><leader> :bn<CR>
 " Tab and enter autocomplete behaviour (like in VSCode)
 " Toggle with :CocEnable/Disable
 inoremap <silent><expr> <TAB>
@@ -79,11 +88,32 @@ nmap <silent> gd <Plug>(coc-definition)
 nmap <leader>r <Plug>(coc-rename)
 nmap <leader>a <Plug>(coc-codeaction)
 " Open init.vim
-nnoremap <leader><leader> :e ~/.config/nvim/init.vim <bar> :source ~/.config/nvim/init.vim <CR>
+nnoremap <leader><CR> :e ~/.config/nvim/init.vim <bar> :source ~/.config/nvim/init.vim <CR>
 
 " PROSE
+" timer for autocommit
+" marks
+nnoremap gm ]'
+nnoremap gM ['
+" single folding
+nnoremap <SPACE> za
+" toggle fold for all
+let $unrol=0
+function UnrolMe()
+if $unrol==0
+    :exe "normal zR"
+    let $unrol=1
+else
+    :exe "normal zM"
+    let $unrol=0
+endif
+endfunction
+nnoremap <leader><SPACE> :call UnrolMe() <CR>
 " word count
 nnoremap <leader>w g<c-g>
+" wordy
+nnoremap <leader>S :<C-u>NextWordy<cr>
+let g:wordy#ring = ['weak', 'redundant', 'problematic', 'puffery', 'being', 'passive-voice', 'adjectives', 'adverbs']
 " expected navigation behaviour when line wraps
 map j gj
 map k gk
@@ -101,4 +131,3 @@ endfunction
 
 " Misc "
 set number
-
