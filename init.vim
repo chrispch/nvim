@@ -1,7 +1,7 @@
 " Plugins will be downloaded under the specified directory.
 call plug#begin('~/.vim/plugged')
 
-Plug 'xolox/vim-notes'
+" Plug 'xolox/vim-notes'
 Plug 'xolox/vim-misc'
 Plug 'dart-lang/dart-vim-plugin'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -36,6 +36,26 @@ filetype plugin on
 
 " autosaves file on cursor hold
 autocmd CursorHold,CursorHoldI * update
+
+" toggle status bar
+let s:hidden_all = 0
+function! ToggleHiddenAll()
+    if s:hidden_all  == 0
+        let s:hidden_all = 1
+        set noshowmode
+        set noruler
+        set laststatus=0
+        set noshowcmd
+    else
+        let s:hidden_all = 0
+        set showmode
+        set ruler
+        set laststatus=2
+        set showcmd
+    endif
+endfunction
+
+nnoremap <S-h> :call ToggleHiddenAll()<CR>
 
 " Color scheme
 colo seoul256
@@ -81,6 +101,10 @@ nnoremap <leader>t :NERDTreeToggle <CR>
 nnoremap <leader>f :CommandT <CR>
 " Navigate between windows
 nnoremap <leader><TAB> <c-w><c-w>
+nnoremap <leader><Right> <c-w><Right>
+nnoremap <leader><Left> <c-w><Left>
+nnoremap <leader><Up> <c-w><Up>
+nnoremap <leader><Down> <c-w><Down>
 " Close current window
 nnoremap <leader>q <c-w>q
 " Remap keys for goto definition
@@ -113,6 +137,8 @@ else
 endif
 endfunction
 nnoremap <leader><SPACE> :call UnrolMe() <CR>
+" jump to end fold
+nnoremap ] :/# <CR> k
 " word count
 nnoremap <leader>w g<c-g>
 " wordy
@@ -122,8 +148,12 @@ let g:wordy#ring = ['weak', 'redundant', 'problematic', 'puffery', 'being', 'pas
 map j gj
 map k gk
 " Toggle spellcheck
-:map <leader>sp :setlocal spell! spelllang=en_us<CR>
-nnoremap <leader>p :Goyo 70%x85%<CR> :PencilToggle <CR>
+:map <leader>sp :set spell! spelllang=en_gb<CR>
+:map <leader>s z=
+" Goyo
+let g:goyo_width = "75%"
+let g:goyo_height = "95%"
+nnoremap <leader>p :Goyo <CR> :PencilToggle <CR>
 " TIPS
 " use ctrl-z to suspend vim and go back to the terminal, fg to resume
 " run so % to load init.vim
