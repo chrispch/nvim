@@ -119,7 +119,7 @@ nnoremap <leader><CR> :e ~/.config/nvim/init.vim <bar> :source ~/.config/nvim/in
 " PROSE
 " timer for autocommit
 " autocorrect 
-nnoremap <leader>a :call AutoCorrect()
+nnoremap <leader>a :call AutoCorrect() <CR>
 " thesaurus (g:tq_openoffice_en_file = /Users/Shared/myspell/openoffice_en_thesaurus/th_en_US_new)
 let g:tq_openoffice_en_file = "/Users/Shared/myspell/openoffice_en_thesaurus/th_en_US_new"
 nnoremap <leader>T :ThesaurusQueryReplaceCurrentWord <CR>
